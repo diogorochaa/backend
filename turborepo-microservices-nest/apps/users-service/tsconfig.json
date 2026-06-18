@@ -1,0 +1,20 @@
+{
+  "extends": "../../packages/typescript-config/nestjs.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": "./",
+    "paths": {
+      "@repo/database-users": [
+        "../../packages/database/users/dist/src/index.d.ts"
+      ],
+      "@repo/messaging": ["../../packages/messaging/dist/index.d.ts"]
+    }
+  },
+  "references": [
+    { "path": "../../packages/database/users" },
+    { "path": "../../packages/messaging" }
+  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "test"]
+}

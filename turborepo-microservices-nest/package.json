@@ -1,0 +1,46 @@
+{
+  "name": "turborepo-microservices-nest",
+  "private": true,
+  "scripts": {
+    "create:service": "node scripts/create-microservice.mjs",
+    "create:database": "node scripts/create-database-package.mjs",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "biome format --write .",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "check-types": "turbo run check-types",
+    "test": "turbo run test",
+    "test:affected": "turbo run test --affected --summarize",
+    "affected": "turbo run lint check-types build test --affected --summarize",
+    "validate": "pnpm check && turbo run lint check-types build test --summarize",
+    "validate:affected": "pnpm check && turbo run lint check-types build test --affected --summarize",
+    "docker:up": "bash tooling/scripts/docker.sh up infra",
+    "docker:up:messaging": "bash tooling/scripts/docker.sh up messaging",
+    "docker:up:all": "bash tooling/scripts/docker.sh up all",
+    "docker:down": "bash tooling/scripts/docker.sh down",
+    "docker:logs": "bash tooling/scripts/docker.sh logs",
+    "docker:ps": "bash tooling/scripts/docker.sh ps",
+    "db:generate": "turbo run generate --filter=@repo/database-users --filter=@repo/database-orders",
+    "db:migrate": "turbo run db:migrate --filter=@repo/database-users --filter=@repo/database-orders",
+    "db:migrate:users": "pnpm --filter @repo/database-users db:migrate",
+    "db:migrate:users:deploy": "pnpm --filter @repo/database-users exec prisma migrate deploy",
+    "db:migrate:orders": "pnpm --filter @repo/database-orders db:migrate",
+    "db:push": "turbo run db:push --filter=@repo/database-users --filter=@repo/database-orders",
+    "db:studio:users": "bash tooling/scripts/prisma-studio.sh users",
+    "db:studio:orders": "bash tooling/scripts/prisma-studio.sh orders"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.0",
+    "@repo/biome-config": "workspace:*",
+    "@nestjs/cli": "^11.0.21",
+    "@nestjs/schematics": "^11.1.0",
+    "turbo": "^2.9.14",
+    "typescript": "5.9.2"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.19"
+  }
+}

@@ -1,0 +1,11 @@
+name: dfr-microservices
+
+# Perfis:
+#   infra  → só Postgres (todos os bancos por serviço)
+#   all    → infra + messaging (quando RabbitMQ existir)
+#   users  → alias de infra (mesmo Postgres, banco users_db)
+#   orders → alias de infra (mesmo Postgres, banco orders_db)
+
+include:
+  - path: ./postgres/docker-compose.yml
+  - path: ./rabbitmq/docker-compose.yml

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "files": [],
+  "references": [
+    { "path": "./packages/database/users" },
+    { "path": "./packages/database/orders" },
+    { "path": "./packages/messaging" },
+    { "path": "./apps/users-service" },
+    { "path": "./apps/orders-service" },
+    { "path": "./apps/gateway" }
+  ]
+}

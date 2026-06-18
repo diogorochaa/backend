@@ -1,0 +1,34 @@
+x-postgres-base: &postgres-base
+  image: postgres:16-alpine
+  restart: unless-stopped
+  environment:
+    POSTGRES_USER: ${POSTGRES_USER:-postgres}
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    POSTGRES_DB: postgres
+  volumes:
+    - postgres_data:/var/lib/postgresql/data
+    - ./init:/docker-entrypoint-initdb.d:ro
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d postgres"]
+    interval: 5s
+    timeout: 5s
+    retries: 10
+    start_period: 10s
+
+services:
+  postgres:
+    <<: *postgres-base
+    container_name: dfr-postgres
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    profiles:
+      - infra
+      - all
+      - users
+      - orders
+      - auth
+      - billing
+      - notification
+
+volumes:
+  postgres_data:

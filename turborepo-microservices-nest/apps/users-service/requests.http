@@ -1,0 +1,35 @@
+@baseUrl = http://localhost:3000
+@gatewayUrl = http://localhost:4000/api
+
+### Via API Gateway (gateway :4000 + users-service :3000 rodando)
+# GET {{gatewayUrl}}/users
+
+### Health (lista vazia ou usuários existentes)
+GET {{baseUrl}}/users
+
+### Criar usuário
+# @name createUser
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "email": "diogo@example.com",
+  "name": "Diogo Silva",
+  "password": "senha12345",
+  "active": true
+}
+
+### Buscar por ID (use o id retornado acima)
+@userId = {{createUser.response.body.id}}
+GET {{baseUrl}}/users/{{userId}}
+
+### Atualizar usuário
+PATCH {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+
+{
+  "name": "Ana Silva Atualizada"
+}
+
+### Remover usuário
+DELETE {{baseUrl}}/users/{{userId}}

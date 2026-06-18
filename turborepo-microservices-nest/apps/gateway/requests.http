@@ -1,0 +1,20 @@
+@gatewayUrl = http://localhost:4000/api
+
+### Health do gateway
+GET http://localhost:4000/api/health
+
+### Listar usuários (via gateway → users-service)
+GET {{gatewayUrl}}/users
+
+### Criar usuário (via gateway)
+POST {{gatewayUrl}}/users
+Content-Type: application/json
+
+{
+  "email": "carlos@example.com",
+  "name": "Carlos User",
+  "password": "senha12345"
+}
+
+### orders-service é events-only (sem rota no gateway)
+# Ver logs do consumer em apps/orders-service

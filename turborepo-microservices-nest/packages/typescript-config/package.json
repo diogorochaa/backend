@@ -1,0 +1,17 @@
+{
+  "name": "@repo/typescript-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "files": [
+    "base.json",
+    "nestjs.json",
+    "nestjs-library.json"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./base.json": "./base.json",
+    "./nestjs.json": "./nestjs.json",
+    "./nestjs-library.json": "./nestjs-library.json"
+  }
+}
