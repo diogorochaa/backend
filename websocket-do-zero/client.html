@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Chat WebSocket</title>
+</head>
+
+<body>
+    <h1>Chat WebSocket</h1>
+
+    <input id="message" placeholder="Digite uma mensagem" />
+
+    <button id="send">
+        Enviar
+    </button>
+
+    <pre id="output"></pre>
+
+    <script>
+        const socket = new WebSocket("ws://localhost:8080");
+
+        const output = document.getElementById("output");
+        const input = document.getElementById("message");
+        const button = document.getElementById("send");
+
+        socket.onopen = () => {
+            output.textContent += "Conectado!\n";
+        };
+
+        socket.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+
+                switch (data.type) {
+                    case "connected":
+                        output.textContent += `Conectado com id: ${data.payload.userId}\n`;
+                        break;
+                    case "chat.message":
+                        output.textContent += `${data.payload.userId}: ${data.payload.message}\n`;
+                        break;
+                    case "user.joined":
+                        output.textContent += `+ Usuário entrou: ${data.payload.userId}\n`;
+                        break;
+                    case "user.left":
+                        output.textContent += `- Usuário saiu: ${data.payload.userId}\n`;
+                        break;
+                    case "error":
+                        output.textContent += `Erro: ${data.payload.message}\n`;
+                        break;
+                    default:
+                        output.textContent += `Servidor: ${event.data}\n`;
+                }
+            } catch {
+                output.textContent += `Servidor: ${event.data}\n`;
+            }
+        };
+
+        socket.onclose = () => {
+            output.textContent += "Desconectado\n";
+        };
+
+        socket.onerror = (error) => {
+            console.error(error);
+        };
+
+        function sendMessage() {
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            socket.send(
+                JSON.stringify({
+                    type: "chat.message",
+                    payload: { message },
+                })
+            );
+
+            input.value = "";
+            input.focus();
+        }
+
+        button.onclick = sendMessage;
+
+        input.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+
+</html>
